@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+{% block content %}
+<center>
+	{% if nuevo == 1 %}
+	<h1>Nuevo Curso</h1>
+	{% else %}
+	<h1>Editar Curso</h1>
+	{% endif %}
+</center>
+
+<hr>
+<form action="" method="POST">
+	<div class="form-row">
+		<div class="col-md-6">
+			<label for="institucion">Institucion*</label>
+			<select class="form-control" id="institucion" name="institucion" required>
+				<option value="">Seleccione Institución</option>
+				{% for i in instituciones %}
+				{% if i[0] == curso[1] %}
+				<option value="{{i[0]}}" selected>{{i[2]}} - {{i[1]}}</option>
+				{% else %}
+				<option value="{{i[0]}}">{{i[2]}} - {{i[1]}}</option>
+				{% endif %}
+				{% endfor %}
+			</select>
+		</div>
+		<div class="col-md-6">
+			<label for="nombre">Curso*</label>
+			{% if nuevo == 1 %}
+			<input type="text" class="form-control" name="nombre" id="nombre" placeholder="Curso" value="{{curso[0]}}" onchange="loadAbreviatura()" required>
+			{% else %}
+			<input type="text" class="form-control" name="nombre" id="nombre" placeholder="Curso" value="{{curso[0]}}" required>
+			{% endif %}
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="col-md-6">
+			<label for="abreviatura">Abreviatura*</label>
+			<input type="text" class="form-control" name="abreviatura" id="abreviatura" placeholder="Abreviatura" value="{{curso[2]}}" required>
+			<small id="password_match_message" class="form-text text-muted text-danger">{{mensaje}}</small>
+		</div>
+	</div>
+	<br>
+	<center>
+		<input class="btn btn-primary" type="submit" value="Aceptar">
+		<br>
+	</center>
+	<hr>
+</form>
+
+<script>
+	function loadAbreviatura(){
+		var nombre = document.getElementById("nombre")
+		var nombres = nombre.value.split(' ')
+		var iniciales = ''
+		for (var i = 0; i<nombres.length; i++){
+			iniciales = iniciales + nombres[i][0]
+		}
+		var abreviatura = document.getElementById('abreviatura')
+		iniciales = iniciales.toUpperCase()
+		abreviatura.value = iniciales
+	}
+</script>
+
+{% endblock %}

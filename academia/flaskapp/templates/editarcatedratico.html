@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+{% block content %}
+<center>
+	<h1>Editar Catedratico</h1>
+</center>
+
+<hr>
+<form action="" method="POST">
+	<div class="form-row">
+		<div class="col-md-6">
+			<label for="nombre1">Primer Nombre*</label>
+			<input type="text" class="form-control" name="nombre1" id="nombre1" placeholder="Primer Nombre" value="{{catedratico[0]}}" required>
+		</div>
+		<div class="col-md-6">
+			<label for="nombre2">Segundo Nombre</label>
+			<input type="text" class="form-control" name="nombre2" id="nombre2" placeholder="Segundo Nombre" value="{{catedratico[1]}}">
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="col-md-6">
+			<label for="apellido1">Primer Apellido*</label>
+			<input type="text" class="form-control" name="apellido1" id="apellido1" placeholder="Primer Apellido"  value="{{catedratico[2]}}" required>
+		</div>
+		<div class="col-md-6">
+			<label for="apellido2">Segundo Apellido</label>
+			<input type="text" class="form-control" name="apellido2" id="apellido2" placeholder="Segundo Apellido"  value="{{catedratico[3]}}">
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="col-md-6">
+			<label for="apellido3">Apellido de Casado(a)</label>
+			<input type="text" class="form-control" name="apellido3" id="apellido3" placeholder="Apellido de Casado(a)" value="{{catedratico[4]}}">
+		</div>
+		<div class="col-md-6">
+			<label for="correo">Correo</label>
+			<input type="email" class="form-control" name="correo" id="correo" placeholder="Correo" value="{{catedratico[5]}}">
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="col-md-6">
+			<label for="genero">Género*</label>
+			<select class="form-control" id="genero" name="genero" required>
+				<option value="">Seleccione género</option>
+				{% if catedratico[6] == 1 %}
+				<option value="1" selected>Femenino</option>
+				<option value="2">Masculino</option>
+				{% elif catedratico[6] == 2 %}
+				<option value="1">Femenino</option>
+				<option value="2" selected>Masculino</option>
+				{% endif %}
+			</select>
+		</div>
+		<div class="col-md-6">
+			<label for="fechanacimiento">Fecha de Nacimiento*</label>
+			<input type="date" class="form-control" name="fechanacimiento" id="fechanacimiento" value="{{catedratico[7]}}" required>
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="col-md-6">
+			<label for="telefono">Teléfono</label>
+			<input type="number" class="form-control" name="telefono" id="telefono" placeholder="Teléfono" value="{{catedratico[8]}}">
+		</div>
+		<div class="col-md-6">
+			<label for="celular">Celular</label>
+			<input type="number" class="form-control" name="celular" id="celular" placeholder="Celular" value="{{catedratico[9]}}">
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="col-md-12">
+			<label for="nivelacademico">Nivel Académico*</label>
+			<select class="form-control" id="nivelacademico" name="nivelacademico" required>
+				<option value="">Seleccione nivel academico</option>
+				{% for i in niveles %}
+				{% if i[0] == catedratico[10] %}
+				<option value="{{i[0]}}" selected>{{i[2]}} - {{i[1]}}</option>
+				{% else %}
+				<option value="{{i[0]}}">{{i[2]}} - {{i[1]}}</option>
+				{% endif %}
+				{% endfor %}
+			</select>
+		</div>
+	</div>
+	<br>
+	<center>
+		<input class="btn btn-primary" type="submit" value="Aceptar">
+	</center>
+	<br>
+	<hr>
+</form>
+
+{% endblock %}

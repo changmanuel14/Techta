@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block content %}
+<center>
+	<h1>Busqueda de Estudiante</h1>
+</center>
+<br><br>
+<form action="" method="POST">
+	<div class="form-row">
+		<div class="col-md-4">
+			<label for="carnet">Carnet</label>
+			<input type="text" id="carnet" name="carnet" class="form-control" placeholder="Carnet" value="{{carnet}}">
+		</div>
+		<div class="col-md-8">
+			<label for="nombre">Nombre</label>
+			<input type="text" id="nombre" name="nombre" class="form-control" placeholder="Nombre" value="{{nombre}}">
+		</div>
+	</div>
+	<br>
+	<center>
+		<input class="btn btn-primary" type="submit" value="Aceptar">
+	</center>
+</form>
+
+<table class="table table-stripped">
+	<tr>
+		<th>No.</th>
+		<th>Nombre</th>
+		<th>Apellido</th>
+		<th>Carnet</th>
+		<th>Carrera</th>
+	</tr>
+	{% for i in range(cantidad) %}
+	<tr onClick="window.location.href='/perfilestudiante/{{estudiantes[i][0]}}';">
+		<td>{{i + 1}}</td>
+		<td>{{estudiantes[i][1]}} {{estudiantes[i][2]}}</td>
+		<td>{{estudiantes[i][3]}} {{estudiantes[i][4]}} {{estudiantes[i][5]}}</td>
+		<td>{{estudiantes[i][6]}}</td>
+		<td>{{carreras[i][0]}}</td>
+	</tr>
+	{% endfor %}
+</table>
+
+{% endblock %}

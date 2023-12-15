@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+<center>
+	<h1>Inicio de Sesión</h1>
+	{% if tipo == 1 %}
+	<h2>Portal Administrativo</h2>
+	{% elif tipo == 2 %}
+	<h2>Portal de Catedráticos</h2>
+	{% elif tipo == 3 %}
+	<h2>Portal de Estudiantes</h2>
+	{% endif %}
+
+	<div class="container mt-5">
+		<form method="post" action="" class="col-md-6">
+			<div class="form-group">
+				<label for="usuario">Usuario:</label>
+				<input type="text" id="usuario" name="usuario" class="form-control">
+			</div>
+			<div class="form-group">
+				<label for="clave">Contraseña:</label>
+				<input type="password" id="clave" name="clave" class="form-control">
+			</div>
+			<button type="submit" class="btn btn-primary">Iniciar sesión</button>
+		</form>
+	</div>
+</center>
+
+{% endblock %}

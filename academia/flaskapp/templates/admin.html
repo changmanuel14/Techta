@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block content %}
+<center>
+	<h1>Bienvenido</h1>
+	<h2>Apoyo en Salud y Educacion S.A.</h2>
+	<h4>Escuela Privada de Auxiliares de Enfermeria "Los Altos"</h4>
+	<h4>Technical Training Academy</h4>
+	<h4>Pagina de Inicio Admin</h4>
+</center>
+<br><br>
+<div class="row">
+	<div class="col-6">
+		<a href="/nuevoestudiante">
+			<button class="button1"><strong>Nuevo Estudiante</strong> <i class="iconos fas fa-user-plus"></i></button>
+		</a><br>
+		<a href="/buscarestudiante">
+			<button class="button1"><strong>Buscar Estudiante</strong> <i class="iconos fas fa-search"></i></button>
+		</a><br>
+		<a href="/curso">
+			<button class="button1"><strong>Cursos</strong> <i class="iconos fas fa-tasks"></i></button>
+		</a><br>
+		<a href="/clase">
+			<button class="button1"><strong>Clases</strong> <i class="iconos fas fa-chalkboard"></i></button>
+		</a><br>
+		<a href="/catedratico">
+			<button class="button1"><strong>Catedratico</strong> <i class="iconos fas fa-user"></i></button>
+		</a><br>
+	</div>
+</div>
+
+{% endblock %}

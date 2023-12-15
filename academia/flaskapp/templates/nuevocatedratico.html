@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+{% block content %}
+<center>
+	<h1>Nuevo Catedratico</h1>
+</center>
+
+<hr>
+<form action="" method="POST">
+	<div class="form-row">
+		<div class="col-md-6">
+			<label for="nombre1">Primer Nombre*</label>
+			<input type="text" class="form-control" name="nombre1" id="nombre1" placeholder="Primer Nombre" required>
+		</div>
+		<div class="col-md-6">
+			<label for="nombre2">Segundo Nombre</label>
+			<input type="text" class="form-control" name="nombre2" id="nombre2" placeholder="Segundo Nombre">
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="col-md-6">
+			<label for="apellido1">Primer Apellido*</label>
+			<input type="text" class="form-control" name="apellido1" id="apellido1" placeholder="Primer Apellido" required>
+		</div>
+		<div class="col-md-6">
+			<label for="apellido2">Segundo Apellido</label>
+			<input type="text" class="form-control" name="apellido2" id="apellido2" placeholder="Segundo Apellido">
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="col-md-6">
+			<label for="apellido3">Apellido de Casado(a)</label>
+			<input type="text" class="form-control" name="apellido3" id="apellido3" placeholder="Apellido de Casado(a)">
+		</div>
+		<div class="col-md-6">
+			<label for="correo">Correo</label>
+			<input type="email" class="form-control" name="correo" id="correo" placeholder="Correo">
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="col-md-6">
+			<label for="genero">Género*</label>
+			<select class="form-control" id="genero" name="genero" required>
+				<option value="">Seleccione género</option>
+				<option value="1">Femenino</option>
+				<option value="2">Masculino</option>
+			</select>
+		</div>
+		<div class="col-md-6">
+			<label for="fechanacimiento">Fecha de Nacimiento*</label>
+			<input type="date" class="form-control" name="fechanacimiento" id="fechanacimiento" required>
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="col-md-6">
+			<label for="telefono">Teléfono</label>
+			<input type="number" class="form-control" name="telefono" id="telefono" placeholder="Teléfono">
+		</div>
+		<div class="col-md-6">
+			<label for="celular">Celular</label>
+			<input type="number" class="form-control" name="celular" id="celular" placeholder="Celular">
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="col-md-12">
+			<label for="nivelacademico">Nivel Académico*</label>
+			<select class="form-control" id="nivelacademico" name="nivelacademico" required>
+				<option value="">Seleccione nivel academico</option>
+				{% for i in niveles %}
+				<option value="{{i[0]}}">{{i[2]}} - {{i[1]}}</option>
+				{% endfor %}
+			</select>
+		</div>
+	</div>
+	<br>
+	<center>
+		<input class="btn btn-primary" type="submit" value="Aceptar">
+	</center>
+	<br>
+	<hr>
+</form>
+
+{% endblock %}

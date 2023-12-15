@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+{% block content %}
+<br><br><br>
+<h2 style="background-color: lightgreen;">{{mensaje}}</h2>
+<form action="" method="POST">
+	<div class="row">
+		<div class="col-2">
+			<center>
+				<br>
+				<img src="/static/savedphotos/{{estudiante[7]}}" class="imagen">
+				<h5>{{estudiante[1]}} {{estudiante[2]}} {{estudiante[3]}} {{estudiante[4]}} {{estudiante[5]}}</h5>
+				<h6><strong>{{estudiante[6]}}</strong></h6>
+			</center>
+		</div>
+		<div class="col-10">
+			<h3>Inscripción</h3>
+			<table class="table table-stripped">
+				<tr>
+					<th>Seleccionar</th>
+					<th>Curso</th>
+					<th>Catedrático</th>
+					<th>Plan</th>
+					<th>Fecha inicio</th>
+					<th>Fecha fin</th>
+					<th>Inscritos</th>
+				</tr>
+				{% for i in range(cant) %}
+				<tr>
+					<td>
+						<center>
+							<input type="checkbox" class="form-check-input" id="check{{clases[i][5]}}"
+								name="check{{clases[i][5]}}" style="transform: scale(2);" value="1">
+						</center>
+					</td>
+					<td>{{clases[i][0]}}</td>
+					<td>{{clases[i][1]}}</td>
+					<td>{{clases[i][2]}}</td>
+					<td>{{clases[i][3]}}</td>
+					<td>{{clases[i][4]}}</td>
+					<td>{{cantidades[i]}}</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+	<center>
+		<input class="btn btn-primary" type="submit" value="Aceptar">
+	</center>
+</form>
+
+{% endblock %}

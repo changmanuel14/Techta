@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block content %}
+<br><br><br>
+<div class="row">
+	<div class="col-5">
+		<a href="/buscarestudiante">
+			<button class="button1"><strong>Buscar Estudiante</strong> <i class="iconos fas fa-search"></i></button>
+		</a><br>
+		<a href="/inscripcion/{{estudiante[0]}}">
+			<button class="button1"><strong>Inscripción</strong> <i class="iconos fas fa-pen-square"></i></button>
+		</a><br>
+		<a href="/notas/{{estudiante[0]}}">
+			<button class="button1"><strong>Notas</strong> <i class="iconos fas fa-book-open"></i></button>
+		</a><br>
+		<a href="/editarestudiante/{{estudiante[0]}}">
+			<button class="button1"><strong>Datos Generales</strong> <i class="iconos fas fa-info-circle"></i></button>
+		</a><br>
+	</div>
+	<div class="col-7" style="border: 1px solid; border-radius: 20px">
+		<h5>Datos del estudiante</h5>
+		<div class="row">
+			<div class="col-6">
+				<center>
+					<br>
+					<img class="imagen" src="/static/savedphotos/{{estudiante[7]}}" width="100%"> 
+					<h6><strong>{{estudiante[6]}}</strong></h6>
+				</center>
+			</div>
+			<div class="col-6">
+				<br>
+				<h5>{{estudiante[1]}} {{estudiante[2]}} {{estudiante[3]}} {{estudiante[4]}} {{estudiante[5]}}</h5>
+				<h5>{{carrera[0]}} - {{carrera[1]}}</h5>
+				<h5>{{estado}}</h5>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
