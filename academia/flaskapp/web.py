@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, url_for, redirect, session, f
 import pymysql
 from datetime import datetime, date
 from os import getcwd
-from barcode.writer import ImageWriter
 from werkzeug.security import generate_password_hash, check_password_hash
 from conexion import Conhost, Conuser, Conpassword, Condb
 
