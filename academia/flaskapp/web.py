@@ -1087,6 +1087,7 @@ def loginadmin():
 	if request.method == 'POST':
 		usuario = request.form['usuario']
 		password = request.form['clave']
+		print(usuario, password)
 		try:
 			conexion = pymysql.connect(host=Conhost, user=Conuser, password=Conpassword, db=Condb)
 			try:
