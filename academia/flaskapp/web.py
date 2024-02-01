@@ -1,13 +1,9 @@
-from flask import Flask, Response, render_template, request, url_for, redirect, session, flash, Blueprint
+from flask import Flask, render_template, request, url_for, redirect, session, flash, Blueprint
 import pymysql
 from datetime import datetime, date
 from os import getcwd
-import io
-import xlwt
-import barcode
 from barcode.writer import ImageWriter
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_weasyprint import HTML, render_pdf
 from conexion import Conhost, Conuser, Conpassword, Condb
 
 app = Flask(__name__)
