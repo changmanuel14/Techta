@@ -325,11 +325,14 @@ def nuevoestudiante():
 					except:
 						carnet = 1
 					carnet = precarnet + str(carnet).rjust(3, '0')
-					if 'foto' in request.files:
-						foto = request.files['foto']
-						data = foto.filename.split('.')
-						aux = carnet + "." + data[1]
-						foto.save(PATH_FILE + aux)
+					try:
+						if 'foto' in request.files:
+							foto = request.files['foto']
+							data = foto.filename.split('.')
+							aux = carnet + "." + data[1]
+							foto.save(PATH_FILE + aux)
+					except:
+						aux = ""
 					consulta = "insert into estudiante(nombre1, nombre2, apellido1, apellido2, apellido3, telefono, celular, correo, idgenero, fechanacimiento, carnet, foto) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
 					cursor.execute(consulta, (nombre1, nombre2, apellido1, apellido2, apellido3, telefono, celular, correo, genero, fechanacimiento, carnet, aux))
 					conexion.commit()
