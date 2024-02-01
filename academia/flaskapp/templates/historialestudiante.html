@@ -14,7 +14,7 @@
 <!-- fancyTable Js -->
 <script src="{{ url_for('static', filename='fancyTable.js') }}"></script>
 
-<h1>Historico de Clases</h1>
+<h1>Historial de Cursos</h1>
 <br><br>
 <table class="table table-striped sortable" id="sampleTable">
 	<tr>
@@ -23,7 +23,7 @@
 		<th>Plan</th>
 		<th>Fecha de Inicio</th>
 		<th>Fecha de Fin</th>
-		<th colspan="2">Opciones</th>
+		<th>Ver tareas</th>
 	</tr>
 	{% for i in clases %}
 	<tr>
@@ -32,8 +32,7 @@
 		<td>{{i[2]}}</td>
 		<td>{{i[3]}}</td>
 		<td>{{i[4]}}</td>
-		<td><a href="/claseestudiantes/{{i[5]}}"><button type="button" class="btn btn-primary">Ver Inscritos</button></a></td>
-		<td><a href="/vertareas/{{i[5]}}"><button type="button" class="btn btn-primary">Ver tareas</button></a></td>
+		<td><a href="/vertareasest/{{i[5]}}"><button type="button" class="btn btn-primary">Ver Notas</button></a></td>
 	</tr>
 	{% endfor %}
 </table>

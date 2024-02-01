@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block content %}
+<center>
+	{% if nuevo == 1 %}
+	<h1>Nueva tarea</h1>
+	{% else %}
+	<h1>Editar tarea</h1>
+	{% endif %}
+</center>
+
+<hr>
+<form action="" method="POST">
+	<div class="form-row">
+		<div class="col-md-6">
+			<label for="concepto">Concepto*</label>
+			<input type="text" class="form-control" name="concepto" id="concepto" value="{{tarea[0]}}" required>
+		</div>
+		<div class="col-md-6">
+			<label for="fechafin">Ponderación*</label>
+			<input type="number" step="0.01" class="form-control" name="ponderacion" id="ponderacion" value="{{tarea[1]}}" required>
+		</div>
+	</div>
+	<br>
+	<center>
+		<input class="btn btn-primary" type="submit" value="Aceptar">
+	</center>
+	<br>
+	<hr>
+</form>
+
+{% endblock %}

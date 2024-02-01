@@ -175,6 +175,98 @@ def estudiantes():
 
 	return render_template('estudiantes.html', title="Portal de Estudiantes")
 
+@app.route('/asignacionesestudiante', methods=['GET', 'POST'])
+def asignacionesestudiante():
+	if 'usuario' in session and session['tipouser'] == 3:
+		pass
+	else:
+		return redirect(url_for('loginestudiante'))
+	hoy = date.today()
+	try:
+		conexion = pymysql.connect(host=Conhost, user=Conuser, password=Conpassword, db=Condb)
+		try:
+			with conexion.cursor() as cursor:
+				consulta = "select idconexion from user where iduser = %s"
+				cursor.execute(consulta, session["idusuario"])
+				idestudiante = cursor.fetchone()
+				idestudiante = idestudiante[0]
+				consulta = f"Select c.idclase from clase c inner join claseestudiante ce on c.idclase = ce.idclase where ce.idestudiante = {idestudiante} and c.fechafin > '{hoy}'"
+				cursor.execute(consulta)
+				idcursos = cursor.fetchall()
+				clases = []
+				for i in idcursos:
+					consulta = f"SELECT c.nombre, CONCAT(d.nombre1,' ',d.nombre2,' ',d.apellido1,' ',d.apellido2,' ',d.apellido3), p.plan, DATE_FORMAT(l.fechainicio,'%d/%m/%Y'), DATE_FORMAT(l.fechafin,'%d/%m/%Y'), l.idclase from clase l inner join plan p on p.idplan = l.idplan inner join curso c on c.idcurso = l.idcurso inner join catedratico d on d.idcatedratico = l.idcatedratico where l.idclase = {i[0]} order by c.nombre asc"
+					cursor.execute(consulta)
+					curso = cursor.fetchone()
+					clases.append(curso)
+		finally:
+			conexion.close()
+	except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
+		print("Ocurrió un error al conectar: ", e)
+	return render_template('asignacionesestudiante.html', title="Clases Actuales", clases = clases)
+
+@app.route('/historialestudiante', methods=['GET', 'POST'])
+def historialestudiante():
+	if 'usuario' in session and session['tipouser'] == 3:
+		pass
+	else:
+		return redirect(url_for('loginestudiante'))
+	hoy = date.today()
+	try:
+		conexion = pymysql.connect(host=Conhost, user=Conuser, password=Conpassword, db=Condb)
+		try:
+			with conexion.cursor() as cursor:
+				consulta = "select idconexion from user where iduser = %s"
+				cursor.execute(consulta, session["idusuario"])
+				idestudiante = cursor.fetchone()
+				idestudiante = idestudiante[0]
+				consulta = f"Select c.idclase from clase c inner join claseestudiante ce on c.idclase = ce.idclase where ce.idestudiante = {idestudiante} and c.fechafin <= '{hoy}'"
+				cursor.execute(consulta)
+				idcursos = cursor.fetchall()
+				clases = []
+				for i in idcursos:
+					consulta = f"SELECT c.nombre, CONCAT(d.nombre1,' ',d.nombre2,' ',d.apellido1,' ',d.apellido2,' ',d.apellido3), p.plan, DATE_FORMAT(l.fechainicio,'%d/%m/%Y'), DATE_FORMAT(l.fechafin,'%d/%m/%Y'), l.idclase from clase l inner join plan p on p.idplan = l.idplan inner join curso c on c.idcurso = l.idcurso inner join catedratico d on d.idcatedratico = l.idcatedratico where l.idclase = {i[0]} order by c.nombre asc"
+					cursor.execute(consulta)
+					curso = cursor.fetchone()
+					print(curso)
+					clases.append(curso)
+		finally:
+			conexion.close()
+	except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
+		print("Ocurrió un error al conectar: ", e)
+	return render_template('historialestudiante.html', title="Clases Actuales", clases = clases)
+
+@app.route('/vertareasest/<idclase>', methods=['GET', 'POST'])
+def vertareasest(idclase):
+	if 'usuario' in session and session['tipouser'] == 3:
+		pass
+	else:
+		return redirect(url_for('loginestudiante'))
+	hoy = date.today()
+	try:
+		conexion = pymysql.connect(host=Conhost, user=Conuser, password=Conpassword, db=Condb)
+		try:
+			with conexion.cursor() as cursor:
+				consulta = "select idconexion from user where iduser = %s"
+				cursor.execute(consulta, session["idusuario"])
+				idestudiante = cursor.fetchone()
+				idestudiante = idestudiante[0]
+				consulta = f"SELECT c.nombre, CONCAT(d.nombre1,' ',d.nombre2,' ',d.apellido1,' ',d.apellido2,' ',d.apellido3), p.plan, DATE_FORMAT(l.fechainicio,'%d/%m/%Y'), DATE_FORMAT(l.fechafin,'%d/%m/%Y'), l.idclase from clase l inner join plan p on p.idplan = l.idplan inner join curso c on c.idcurso = l.idcurso inner join catedratico d on d.idcatedratico = l.idcatedratico where l.idclase = {idclase} order by c.nombre asc"
+				cursor.execute(consulta)
+				datacurso = cursor.fetchone()
+				consulta = f"Select t.concepto, t.fecha, te.nota from zona t inner join zonaestudiante te on te.idzona = t.idzona where te.idestudiante = {idestudiante} and t.idcurso = {idclase} order by t.fecha asc"
+				cursor.execute(consulta)
+				tareas = cursor.fetchall()
+				print(consulta)
+				suma = 0
+				for i in tareas:
+					suma = suma + float(i[2])
+		finally:
+			conexion.close()
+	except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
+		print("Ocurrió un error al conectar: ", e)
+	return render_template('vertareasest.html', title="Visualizacion de Nota", tareas = tareas, suma = suma, datacurso=datacurso)
+
 @app.route('/estudiante', methods=['GET', 'POST'])
 def estudiante():
 	if 'usuario' in session and session['tipouser'] == 1:
@@ -434,6 +526,13 @@ def inscripcion(id):
 								cursor.execute(consulta, (curso, id))
 								conexion.commit()
 								mensaje = ""
+								consulta = "select idzona from zona where idcurso = %s"
+								cursor.execute(consulta, (curso))
+								tareas = cursor.fetchall()
+								for i in tareas:
+									consulta = "insert into zonaestudiante(idzona, idestudiante, nota) values(%s, %s, 0)"
+									cursor.execute(consulta, (i[0], id))
+									conexion.commit()
 					finally:
 						conexion.close()
 				except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
@@ -658,6 +757,204 @@ def editarclase(idclase):
 		return redirect(url_for('clase'))
 	return render_template('nuevaclase.html', title="Editar Clase", cursos = cursos, clase = clase, planes = planes, catedraticos = catedraticos, nuevo = 0)
 
+@app.route('/claseestudiantes/<idclase>', methods=['GET', 'POST'])
+def claseestudiantes(idclase):
+	if 'usuario' in session and (session['tipouser'] == 2 or session['tipouser'] == 1):
+		pass
+	else:
+		return redirect(url_for('home'))
+	hoy = date.today()
+	try:
+		conexion = pymysql.connect(host=Conhost, user=Conuser, password=Conpassword, db=Condb)
+		try:
+			with conexion.cursor() as cursor:
+				consulta = "select e.idestudiante, e.nombre1, e.nombre2, e.apellido1, e.apellido2, e.apellido3, e.carnet from estudiante e inner join claseestudiante ce on ce.idestudiante = e.idestudiante where ce.idclase = %s order by e.nombre1, e.nombre2, e.apellido1, e.apellido2, e.apellido3"
+				cursor.execute(consulta, idclase)
+				estudiantes = cursor.fetchall()
+				notas = []
+				for i in estudiantes:
+					consulta = "select COALESCE(sum(ze.nota), 0) from zonaestudiante ze inner join zona z on z.idzona = ze.idzona where ze.idestudiante = %s and z.idcurso = %s"
+					cursor.execute(consulta, (i[0], idclase))
+					nota = cursor.fetchone()
+					notas.append(nota[0])
+		finally:
+			conexion.close()
+	except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
+		print("Ocurrió un error al conectar: ", e)
+	return render_template('claseestudiantes.html', title="Estudiantes por Curso", estudiantes = estudiantes, notas = notas, idclase = idclase)
+
+@app.route('/vertareas/<idclase>', methods=['GET', 'POST'])
+def vertareas(idclase):
+	if 'usuario' in session and session['tipouser'] == 2:
+		pass
+	else:
+		return redirect(url_for('home'))
+	hoy = date.today()
+	try:
+		conexion = pymysql.connect(host=Conhost, user=Conuser, password=Conpassword, db=Condb)
+		try:
+			with conexion.cursor() as cursor:
+				consulta = f'select idzona, concepto, DATE_FORMAT(fecha,"%d/%m/%Y"), ponderacion from zona where idcurso = {idclase}'
+				cursor.execute(consulta)
+				tareas = cursor.fetchall()
+				consulta = f'select IF(fechafin>"{hoy}", 1, 0) from clase where idclase = {idclase}'
+				print(consulta)
+				cursor.execute(consulta)
+				condicional = cursor.fetchone()
+				condicional = condicional[0]
+		finally:
+			conexion.close()
+	except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
+		print("Ocurrió un error al conectar: ", e)
+	return render_template('vertareas.html', title="Tareas del Curso", tareas = tareas, idclase = idclase, condicional = condicional)
+
+@app.route('/nuevatarea/<idclase>', methods=['GET', 'POST'])
+def nuevatarea(idclase):
+	if 'usuario' in session and session['tipouser'] == 2:
+		pass
+	else:
+		return redirect(url_for('home'))
+	hoy = date.today()
+	tarea = ["", ""]
+	if request.method == 'POST':
+		concepto = request.form['concepto']
+		ponderacion = request.form['ponderacion']
+		try:
+			conexion = pymysql.connect(host=Conhost, user=Conuser, password=Conpassword, db=Condb)
+			try:
+				with conexion.cursor() as cursor:
+					consulta = "insert into zona(idcurso, concepto, ponderacion, fecha) values (%s,%s,%s,%s);"
+					cursor.execute(consulta, (idclase, concepto, ponderacion, hoy))
+					conexion.commit()
+					consulta = "Select MAX(idzona) from zona;"
+					cursor.execute(consulta)
+					idtarea = cursor.fetchone()
+					idtarea = idtarea[0]
+					consulta = "Select idestudiante from claseestudiante where idclase = %s;"
+					cursor.execute(consulta, idclase)
+					estudiantes = cursor.fetchall()
+					for i in estudiantes:
+						consulta = "insert into zonaestudiante(idzona, idestudiante, nota) values (%s,%s,0);"
+						cursor.execute(consulta, (idtarea, i[0]))
+						conexion.commit()
+			finally:
+				conexion.close()
+		except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
+			print("Ocurrió un error al conectar: ", e)
+		return redirect(url_for('vertareas', idclase = idclase))
+	return render_template('nuevatarea.html', title="Nueva Tarea", idclase = idclase, nuevo = 1, tarea = tarea)
+
+@app.route('/editartarea/<idtarea>', methods=['GET', 'POST'])
+def editartarea(idtarea):
+	if 'usuario' in session and session['tipouser'] == 2:
+		pass
+	else:
+		return redirect(url_for('home'))
+	hoy = date.today()
+	tarea = ["", "", ""]
+	try:
+		conexion = pymysql.connect(host=Conhost, user=Conuser, password=Conpassword, db=Condb)
+		try:
+			with conexion.cursor() as cursor:
+				consulta = "SELECT concepto, ponderacion, idcurso FROM zona where idzona = %s"
+				cursor.execute(consulta, idtarea)
+				tarea = cursor.fetchone()
+		finally:
+			conexion.close()
+	except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
+		print("Ocurrió un error al conectar: ", e)
+	if request.method == 'POST':
+		concepto = request.form['concepto']
+		ponderacion = request.form['ponderacion']
+		try:
+			conexion = pymysql.connect(host=Conhost, user=Conuser, password=Conpassword, db=Condb)
+			try:
+				with conexion.cursor() as cursor:
+					consulta = "update zona set concepto = %s, ponderacion = %s where idzona = %s;"
+					cursor.execute(consulta, (concepto, ponderacion, idtarea))
+					conexion.commit()
+			finally:
+				conexion.close()
+		except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
+			print("Ocurrió un error al conectar: ", e)
+		return redirect(url_for('vertareas', idclase = tarea[2]))
+	return render_template('nuevatarea.html', title="Nueva Tarea", nuevo = 0, tarea = tarea)
+
+@app.route('/calificartarea/<idtarea>', methods=['GET', 'POST'])
+def calificartarea(idtarea):
+	if 'usuario' in session and session['tipouser'] == 2:
+		pass
+	else:
+		return redirect(url_for('home'))
+	hoy = date.today()
+	try:
+		conexion = pymysql.connect(host=Conhost, user=Conuser, password=Conpassword, db=Condb)
+		try:
+			with conexion.cursor() as cursor:
+				consulta = "SELECT concepto, ponderacion, idcurso FROM zona where idzona = %s"
+				cursor.execute(consulta, idtarea)
+				tarea = cursor.fetchone()
+				idclase = tarea[2]
+				consulta = f"SELECT c.nombre, CONCAT(d.nombre1,' ',d.nombre2,' ',d.apellido1,' ',d.apellido2,' ',d.apellido3) from clase l inner join curso c on c.idcurso = l.idcurso inner join catedratico d on d.idcatedratico = l.idcatedratico where l.idclase = {idclase} order by c.nombre asc"
+				cursor.execute(consulta)
+				dataclase = cursor.fetchone()
+				consulta = f"select e.idestudiante, e.nombre1, e.nombre2, e.apellido1, e.apellido2, e.apellido3, e.carnet from estudiante e inner join claseestudiante ce on ce.idestudiante = e.idestudiante where ce.idclase = {idclase} order by e.nombre1, e.nombre2, e.apellido1, e.apellido2, e.apellido3"
+				cursor.execute(consulta)
+				estudiantes = cursor.fetchall()
+				notas = []
+				for i in estudiantes:
+					consulta = f"Select nota from zonaestudiante where idzona = {idtarea} and idestudiante = {i[0]}"
+					cursor.execute(consulta)
+					nota = cursor.fetchone()
+					nota = nota[0]
+					notas.append(nota)
+		finally:
+			conexion.close()
+	except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
+		print("Ocurrió un error al conectar: ", e)
+	if request.method == 'POST':
+		try:
+			conexion = pymysql.connect(host=Conhost, user=Conuser, password=Conpassword, db=Condb)
+			try:
+				with conexion.cursor() as cursor:
+					for i in estudiantes:
+						aux = f"calificacion{i[0]}"
+						nota = request.form[aux]
+						consulta = "update zonaestudiante set nota = %s where idzona = %s and idestudiante = %s;"
+						cursor.execute(consulta, (nota, idtarea, i[0]))
+					conexion.commit()
+			finally:
+				conexion.close()
+		except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
+			print("Ocurrió un error al conectar: ", e)
+		return redirect(url_for('vertareas', idclase = tarea[2]))
+	return render_template('calificartarea.html', title="Calificar Tarea", tarea = tarea, dataclase = dataclase, estudiantes = estudiantes, notas = notas)
+
+@app.route('/eliminartarea/<idtarea>', methods=['GET', 'POST'])
+def eliminartarea(idtarea):
+	if 'usuario' in session and session['tipouser'] == 2:
+		pass
+	else:
+		return redirect(url_for('home'))
+	try:
+		conexion = pymysql.connect(host=Conhost, user=Conuser, password=Conpassword, db=Condb)
+		try:
+			with conexion.cursor() as cursor:
+				consulta = "select idcurso from zona where idzona = %s"
+				cursor.execute(consulta, idtarea)
+				tarea = cursor.fetchone()
+				idclase = tarea[0]
+				consulta = "delete FROM zona where idzona = %s"
+				cursor.execute(consulta, idtarea)
+				consulta = "delete FROM zonaestudiante where idzona = %s"
+				cursor.execute(consulta, idtarea)
+				conexion.commit()
+		finally:
+			conexion.close()
+	except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
+		print("Ocurrió un error al conectar: ", e)
+	return redirect(url_for('vertareas', idclase = idclase))
+
 @app.route('/clasesactuales', methods=['GET', 'POST'])
 def clasesactuales():
 	if 'usuario' in session and session['tipouser'] == 2:
@@ -880,6 +1177,7 @@ def loginestudiante():
 		return redirect(url_for('estudiantes'))
 	else:
 		pass
+	print(generate_password_hash("14052000"))
 	if request.method == 'POST':
 		usuario = request.form['usuario']
 		password = request.form['clave']
@@ -897,7 +1195,7 @@ def loginestudiante():
 						session['usuario'] = usuario
 						session['idusuario'] = user[4]
 						nombre = f"{data[0]} {data[1]} {data[2]} {data[3]} {data[4]}"
-						session['tipouser'] = 2
+						session['tipouser'] = 3
 						session['nombre'] =  nombre
 						flash('Inicio de sesión exitoso')
 						if user[3] == 0:

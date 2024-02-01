@@ -14,26 +14,33 @@
 <!-- fancyTable Js -->
 <script src="{{ url_for('static', filename='fancyTable.js') }}"></script>
 
-<h1>Historico de Clases</h1>
-<br><br>
+<h1>Tareas</h1>
+<br>
+{% if condicional == 1 %}
+<a href="/nuevatarea/{{idclase}}"><button type="button" class="btn btn-success">Nueva tarea</button></a>
+<br>
+{% endif %}
 <table class="table table-striped sortable" id="sampleTable">
 	<tr>
-		<th>Curso</th>
-		<th>Catedratico</th>
-		<th>Plan</th>
-		<th>Fecha de Inicio</th>
-		<th>Fecha de Fin</th>
-		<th colspan="2">Opciones</th>
+		<th>No</th>
+		<th>Concepto</th>
+		<th>Fecha</th>
+		<th>Poderación</th>
+		{% if condicional == 1 %}
+		<th colspan="3">Opciones</th>
+		{% endif %}
 	</tr>
-	{% for i in clases %}
+	{% for i in tareas %}
 	<tr>
-		<td>{{i[0]}}</td>
+		<td>{{loop.index}}</td>
 		<td>{{i[1]}}</td>
 		<td>{{i[2]}}</td>
 		<td>{{i[3]}}</td>
-		<td>{{i[4]}}</td>
-		<td><a href="/claseestudiantes/{{i[5]}}"><button type="button" class="btn btn-primary">Ver Inscritos</button></a></td>
-		<td><a href="/vertareas/{{i[5]}}"><button type="button" class="btn btn-primary">Ver tareas</button></a></td>
+		{% if condicional == 1 %}
+		<td><a href="/editartarea/{{i[0]}}"><button type="button" class="btn btn-info">Editar</button></a></td>
+		<td><a href="/calificartarea/{{i[0]}}"><button type="button" class="btn btn-warning">Calificar</button></a></td>
+		<td><a href="/eliminartarea/{{i[0]}}" onclick="return confirm('¿Está seguro de eliminar esta tarea?')"><button type="button" class="btn btn-danger">Eliminar</button></a></td>
+		{% endif %}
 	</tr>
 	{% endfor %}
 </table>
@@ -43,7 +50,7 @@
 		$("#sampleTable").fancyTable({
 			inputPlaceholder: 'Buscar',
 			pagination: true,
-			perPage:20
+			perPage: 30
 		});
 	});
 </script>

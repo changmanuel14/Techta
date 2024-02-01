@@ -14,36 +14,59 @@
 <!-- fancyTable Js -->
 <script src="{{ url_for('static', filename='fancyTable.js') }}"></script>
 
-<h1>Historico de Clases</h1>
-<br><br>
+<h1>Calificar tarea</h1>
+<br>
+
+<table class="table">
+	<tr>
+		<th>Nombre del curso</th>
+		<td>{{dataclase[0]}}</td>
+	</tr>
+	<tr>
+		<th>Docente</th>
+		<td>{{dataclase[1]}}</td>
+	</tr>
+	<tr>
+		<th>Tarea/asignación</th>
+		<td>{{tarea[0]}}</td>
+	</tr>
+	<tr>
+		<th>Ponderación</th>
+		<td>{{tarea[1]}}</td>
+	</tr>
+</table>
+<form action="" method="POST">
+
 <table class="table table-striped sortable" id="sampleTable">
 	<tr>
-		<th>Curso</th>
-		<th>Catedratico</th>
-		<th>Plan</th>
-		<th>Fecha de Inicio</th>
-		<th>Fecha de Fin</th>
-		<th colspan="2">Opciones</th>
+		<th>No</th>
+		<th>Nombres</th>
+		<th>Apellidos</th>
+		<th>Carnet</th>
+		<th>Nota</th>
 	</tr>
-	{% for i in clases %}
+	{% for i in estudiantes %}
 	<tr>
-		<td>{{i[0]}}</td>
-		<td>{{i[1]}}</td>
-		<td>{{i[2]}}</td>
-		<td>{{i[3]}}</td>
-		<td>{{i[4]}}</td>
-		<td><a href="/claseestudiantes/{{i[5]}}"><button type="button" class="btn btn-primary">Ver Inscritos</button></a></td>
-		<td><a href="/vertareas/{{i[5]}}"><button type="button" class="btn btn-primary">Ver tareas</button></a></td>
+		<td>{{loop.index}}</td>
+		<td>{{i[1]}} {{i[2]}}</td>
+		<td>{{i[3]}} {{i[4]}} {{i[5]}}</td>
+		<td>{{i[6]}}</td>
+		<td><input type="number" step="0.01" min="0" max="{{tarea[1]}}" class="form-control" name="calificacion{{i[0]}}" id="calificacion{{i[0]}}" placeholder="Calificación" value="{{notas[loop.index - 1]}}" required></td>
 	</tr>
 	{% endfor %}
 </table>
+<center>
+	<input class="btn btn-primary" type="submit" value="Aceptar">
+</center>
+
+</form>
 
 <script>
 	$(document).ready(function () {
 		$("#sampleTable").fancyTable({
 			inputPlaceholder: 'Buscar',
 			pagination: true,
-			perPage:20
+			perPage: 30
 		});
 	});
 </script>

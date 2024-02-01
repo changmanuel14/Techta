@@ -14,28 +14,50 @@
 <!-- fancyTable Js -->
 <script src="{{ url_for('static', filename='fancyTable.js') }}"></script>
 
-<h1>Historico de Clases</h1>
-<br><br>
-<table class="table table-striped sortable" id="sampleTable">
+<h1>Desplegado de Nota</h1>
+<br>
+<table class="table">
 	<tr>
 		<th>Curso</th>
-		<th>Catedratico</th>
-		<th>Plan</th>
-		<th>Fecha de Inicio</th>
-		<th>Fecha de Fin</th>
-		<th colspan="2">Opciones</th>
+		<td>{{datacurso[0]}}</td>
 	</tr>
-	{% for i in clases %}
 	<tr>
+		<th>Catedratico</th>
+		<td>{{datacurso[1]}}</td>
+	</tr>
+	<tr>
+		<th>Plan</th>
+		<td>{{datacurso[2]}}</td>
+	</tr>
+	<tr>
+		<th>Fecha de Inicio</th>
+		<td>{{datacurso[3]}}</td>
+	</tr>
+	<tr>
+		<th>Fecha de Fin</th>
+		<td>{{datacurso[4]}}</td>
+	</tr>
+</table>
+<br>
+<table class="table table-striped sortable" id="sampleTable">
+	<tr>
+		<th>No.</th>
+		<th>Concepto</th>
+		<th>Fecha de Asignación</th>
+		<th>Nota</th>
+	</tr>
+	{% for i in tareas %}
+	<tr>
+		<td>{{loop.index}}</td>
 		<td>{{i[0]}}</td>
 		<td>{{i[1]}}</td>
 		<td>{{i[2]}}</td>
-		<td>{{i[3]}}</td>
-		<td>{{i[4]}}</td>
-		<td><a href="/claseestudiantes/{{i[5]}}"><button type="button" class="btn btn-primary">Ver Inscritos</button></a></td>
-		<td><a href="/vertareas/{{i[5]}}"><button type="button" class="btn btn-primary">Ver tareas</button></a></td>
 	</tr>
 	{% endfor %}
+	<tr>
+		<th colspan="3">Nota Final</th>
+		<td>{{suma}}</td>
+	</tr>
 </table>
 
 <script>

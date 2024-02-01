@@ -14,26 +14,23 @@
 <!-- fancyTable Js -->
 <script src="{{ url_for('static', filename='fancyTable.js') }}"></script>
 
-<h1>Historico de Clases</h1>
-<br><br>
+<h1>Estudiantes Asignados</h1>
+<br>
 <table class="table table-striped sortable" id="sampleTable">
 	<tr>
-		<th>Curso</th>
-		<th>Catedratico</th>
-		<th>Plan</th>
-		<th>Fecha de Inicio</th>
-		<th>Fecha de Fin</th>
-		<th colspan="2">Opciones</th>
+		<th>No</th>
+		<th>Nombres</th>
+		<th>Apellidos</th>
+		<th>Carnet</th>
+		<th>Zona</th>
 	</tr>
-	{% for i in clases %}
+	{% for i in estudiantes %}
 	<tr>
-		<td>{{i[0]}}</td>
-		<td>{{i[1]}}</td>
-		<td>{{i[2]}}</td>
-		<td>{{i[3]}}</td>
-		<td>{{i[4]}}</td>
-		<td><a href="/claseestudiantes/{{i[5]}}"><button type="button" class="btn btn-primary">Ver Inscritos</button></a></td>
-		<td><a href="/vertareas/{{i[5]}}"><button type="button" class="btn btn-primary">Ver tareas</button></a></td>
+		<td>{{loop.index}}</td>
+		<td>{{i[1]}} {{i[2]}}</td>
+		<td>{{i[3]}} {{i[4]}} {{i[5]}}</td>
+		<td>{{i[6]}}</td>
+		<td>{{notas[loop.index - 1]}}</td>
 	</tr>
 	{% endfor %}
 </table>
@@ -43,7 +40,7 @@
 		$("#sampleTable").fancyTable({
 			inputPlaceholder: 'Buscar',
 			pagination: true,
-			perPage:20
+			perPage: 30
 		});
 	});
 </script>
