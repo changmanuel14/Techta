@@ -383,12 +383,12 @@ def editarestudiante(id):
 		correo = request.form['correo']
 		genero = request.form['genero']
 		fechanacimiento = request.form['fechanacimiento']
-		if 'foto' in request.files:
+		try:
 			foto = request.files['foto']
 			data = foto.filename.split('.')
 			aux = estudiante[10] + "." + data[1]
 			foto.save(PATH_FILE + aux)
-		else:
+		except:
 			foto = estudiante[11]
 		try:
 			conexion = pymysql.connect(host=Conhost, user=Conuser, password=Conpassword, db=Condb)
