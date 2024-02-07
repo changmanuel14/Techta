@@ -389,7 +389,7 @@ def editarestudiante(id):
 			aux = estudiante[10] + "." + data[1]
 			foto.save(PATH_FILE + aux)
 		except:
-			foto = estudiante[11]
+			aux = estudiante[11]
 		try:
 			conexion = pymysql.connect(host=Conhost, user=Conuser, password=Conpassword, db=Condb)
 			try:
