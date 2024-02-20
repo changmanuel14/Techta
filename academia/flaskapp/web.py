@@ -385,6 +385,7 @@ def editarestudiante(id):
 		fechanacimiento = request.form['fechanacimiento']
 		try:
 			foto = request.files['foto']
+			print(estudiante[10])
 			data = foto.filename.split('.')
 			aux = estudiante[10] + "." + data[1]
 			foto.save(PATH_FILE + aux)
