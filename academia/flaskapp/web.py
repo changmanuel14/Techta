@@ -10,7 +10,7 @@ app.secret_key = 'd589d3d0d15d764ed0a98ff5a37af547'
 
 route_files = Blueprint("route_files", __name__)
 mi_string = chr(92)
-PATH_FILE = getcwd() + mi_string + r'academia' + mi_string +  r'flaskapp\static\savedphotos' + mi_string
+PATH_FILE = getcwd() + mi_string + r'static\savedphotos' + mi_string
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -385,7 +385,7 @@ def editarestudiante(id):
 		fechanacimiento = request.form['fechanacimiento']
 		try:
 			foto = request.files['foto']
-			print(estudiante[10])
+			print(PATH_FILE)
 			data = foto.filename.split('.')
 			aux = estudiante[10] + "." + data[1]
 			foto.save(PATH_FILE + aux)
