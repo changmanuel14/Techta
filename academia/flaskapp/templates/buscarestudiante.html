@@ -24,6 +24,7 @@
 <table class="table table-stripped">
 	<tr>
 		<th>No.</th>
+		<th>Fotografia</th>
 		<th>Nombre</th>
 		<th>Apellido</th>
 		<th>Carnet</th>
@@ -32,6 +33,7 @@
 	{% for i in range(cantidad) %}
 	<tr onClick="window.location.href='/perfilestudiante/{{estudiantes[i][0]}}';">
 		<td>{{i + 1}}</td>
+		<td><img class="imagen" src="/static/savedphotos/{{estudiante[7]}}" width="100%"></td>
 		<td>{{estudiantes[i][1]}} {{estudiantes[i][2]}}</td>
 		<td>{{estudiantes[i][3]}} {{estudiantes[i][4]}} {{estudiantes[i][5]}}</td>
 		<td>{{estudiantes[i][6]}}</td>

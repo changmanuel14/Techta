@@ -424,7 +424,7 @@ def buscarestudiante():
 			try:
 				with conexion.cursor() as cursor:
 					nombre = nombre.replace(" ", "%")
-					consulta = f"select idestudiante, nombre1, nombre2, apellido1, apellido2, apellido3, carnet from estudiante where CONCAT(nombre1,' ',nombre2,' ',apellido1,' ',apellido2,' ',apellido3) LIKE '%{nombre}%' and carnet like '%{carnet}%'"
+					consulta = f"select idestudiante, nombre1, nombre2, apellido1, apellido2, apellido3, carnet, foto from estudiante where CONCAT(nombre1,' ',nombre2,' ',apellido1,' ',apellido2,' ',apellido3) LIKE '%{nombre}%' and carnet like '%{carnet}%'"
 					cursor.execute(consulta)
 					estudiantes = cursor.fetchall()
 					cantidad = len(estudiantes)
