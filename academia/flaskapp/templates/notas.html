@@ -14,37 +14,45 @@
 <!-- fancyTable Js -->
 <script src="{{ url_for('static', filename='fancyTable.js') }}"></script>
 
-<h1>{{title}}</h1>
-<a href="/nuevaclase"><button type="button" class="btn btn-success">Nueva Clase</button></a>
-<br><br>
-<table class="table table-striped sortable" id="sampleTable">
-	<tr>
-		<th>Curso</th>
-		<th>Catedratico</th>
-		<th>Plan</th>
-		<th>Fecha de Inicio</th>
-		<th>Fecha de Fin</th>
-		<th colspan="2">Opciones</th>
-	</tr>
-	{% for i in clases %}
-	<tr>
-		<td>{{i[0]}}</td>
-		<td>{{i[1]}}</td>
-		<td>{{i[2]}}</td>
-		<td>{{i[3]}}</td>
-		<td>{{i[4]}}</td>
-		<td><a href="/editarclase/{{i[5]}}"><button type="button" class="btn btn-primary">Editar</button></a></td>
-		<td><a href="/claseestudiantes/{{i[5]}}"><button type="button" class="btn btn-primary">Detalles</button></a></td>
-	</tr>
-	{% endfor %}
-</table>
+<h1>Notas del Estudiante</h1>
+<br>
+<div class="row">
+	<div class="col-2">
+		<center>
+			<br>
+			<img src="/static/savedphotos/{{estudiante[7]}}" class="imagen">
+			<h5>{{estudiante[1]}} {{estudiante[2]}} {{estudiante[3]}} {{estudiante[4]}} {{estudiante[5]}}</h5>
+			<h6><strong>{{estudiante[6]}}</strong></h6>
+		</center>
+	</div>
+	<div class="col-10">
+		<table class="table table-striped sortable" id="sampleTable">
+			<tr>
+				<th>No</th>
+				<th>Curso</th>
+				<th>Fecha de Inicio</th>
+				<th>Fecha de Fin</th>
+				<th>Nota</th>
+			</tr>
+			{% for i in clases %}
+			<tr>
+				<td>{{loop.index}}</td>
+				<td>{{i[0]}}</td>
+				<td>{{i[1]}}</td>
+				<td>{{i[2]}}</td>
+				<td>{{notas[loop.index - 1]}}</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+</div>
 
 <script>
 	$(document).ready(function () {
 		$("#sampleTable").fancyTable({
 			inputPlaceholder: 'Buscar',
 			pagination: true,
-			perPage:20
+			perPage: 30
 		});
 	});
 </script>

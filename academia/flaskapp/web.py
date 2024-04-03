@@ -12,10 +12,12 @@ route_files = Blueprint("route_files", __name__)
 mi_string = chr(92)
 PATH_FILE = getcwd() +  r'/static/savedphotos/'
 
+#General
 @app.route('/', methods=['GET', 'POST'])
 def home():
 	return render_template('home.html', title="Inicio")
 
+#Administrativo
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
 	if 'usuario' in session and session['tipouser'] == 1:
@@ -25,6 +27,7 @@ def admin():
 
 	return render_template('admin.html', title="Portal Administrativo")
 
+#Catedratico
 @app.route('/catedraticos', methods=['GET', 'POST'])
 def catedraticos():
 	if 'usuario' in session and session['tipouser'] == 2:
@@ -34,6 +37,7 @@ def catedraticos():
 
 	return render_template('catedraticos.html', title="Portal de Catedraticos")
 
+#Administrativo
 @app.route('/catedratico', methods=['GET', 'POST'])
 def catedratico():
 	if 'usuario' in session and session['tipouser'] == 1:
@@ -53,6 +57,7 @@ def catedratico():
 		print("Ocurrió un error al conectar: ", e)
 	return render_template('catedratico.html', title="Catedráticos", catedraticos = catedraticos)
 
+#Administrativo
 @app.route('/nuevocatedratico', methods=['GET', 'POST'])
 def nuevocatedratico():
 	if 'usuario' in session and session['tipouser'] == 1:
@@ -115,6 +120,7 @@ def nuevocatedratico():
 		return redirect(url_for('catedratico'))
 	return render_template('nuevocatedratico.html', title="Nuevo Catedratico", niveles = niveles)
 
+#Administrativo
 @app.route('/editarcatedratico/<idcatedratico>', methods=['GET', 'POST'])
 def editarcatedratico(idcatedratico):
 	if 'usuario' in session and session['tipouser'] == 1 or session['tipouser'] == 2:
@@ -161,6 +167,7 @@ def editarcatedratico(idcatedratico):
 		return redirect(url_for('catedratico'))
 	return render_template('editarcatedratico.html', title="Editar Catedratico", niveles = niveles, catedratico = catedratico)
 
+#Estudiantes
 @app.route('/estudiantes', methods=['GET', 'POST'])
 def estudiantes():
 	if 'usuario' in session and session['tipouser'] == 3:
@@ -170,6 +177,7 @@ def estudiantes():
 
 	return render_template('estudiantes.html', title="Portal de Estudiantes")
 
+#Estudiantes
 @app.route('/asignacionesestudiante', methods=['GET', 'POST'])
 def asignacionesestudiante():
 	if 'usuario' in session and session['tipouser'] == 3:
@@ -200,6 +208,7 @@ def asignacionesestudiante():
 		print("Ocurrió un error al conectar: ", e)
 	return render_template('asignacionesestudiante.html', title="Clases Actuales", clases = clases)
 
+#Estudiantes
 @app.route('/historialestudiante', methods=['GET', 'POST'])
 def historialestudiante():
 	if 'usuario' in session and session['tipouser'] == 3:
@@ -231,6 +240,7 @@ def historialestudiante():
 		print("Ocurrió un error al conectar: ", e)
 	return render_template('historialestudiante.html', title="Clases Actuales", clases = clases)
 
+#Estudiantes
 @app.route('/vertareasest/<idclase>', methods=['GET', 'POST'])
 def vertareasest(idclase):
 	if 'usuario' in session and session['tipouser'] == 3:
@@ -262,6 +272,7 @@ def vertareasest(idclase):
 		print("Ocurrió un error al conectar: ", e)
 	return render_template('vertareasest.html', title="Visualizacion de Nota", tareas = tareas, suma = suma, datacurso=datacurso)
 
+#Administrativo
 @app.route('/estudiante', methods=['GET', 'POST'])
 def estudiante():
 	if 'usuario' in session and session['tipouser'] == 1:
@@ -281,6 +292,7 @@ def estudiante():
 		print("Ocurrió un error al conectar: ", e)
 	return render_template('estudiante.html', title="Estudiantes", estudiantes = estudiantes)
 
+#Administrativo
 @app.route('/nuevoestudiante', methods=['GET', 'POST'])
 def nuevoestudiante():
 	if 'usuario' in session and session['tipouser'] == 1:
@@ -352,6 +364,7 @@ def nuevoestudiante():
 		return redirect(url_for('estudiante'))
 	return render_template('nuevoestudiante.html', title="Nuevo Estudiante", cursos = cursos)
 
+#Administrativo
 @app.route('/editarestudiante/<id>', methods=['GET', 'POST'])
 def editarestudiante(id):
 	if 'usuario' in session and session['tipouser'] == 1:
@@ -405,6 +418,7 @@ def editarestudiante(id):
 		return redirect(url_for('estudiante'))
 	return render_template('editarestudiante.html', title="Editar Estudiante", cursos = cursos, estudiante = estudiante)
 
+#Administrativo
 @app.route('/buscarestudiante', methods=['GET', 'POST'])
 def buscarestudiante():
 	if 'usuario' in session and session['tipouser'] == 1:
@@ -443,6 +457,7 @@ def buscarestudiante():
 	nombre = nombre.replace("%", " ")
 	return render_template('buscarestudiante.html', title="Busqueda de Estudiante", estudiantes = estudiantes, carreras = carreras, cantidad = cantidad, nombre = nombre, carnet = carnet)
 
+#Administrativo
 @app.route('/perfilestudiante/<id>', methods=['GET', 'POST'])
 def perfilestudiante(id):
 	if 'usuario' in session and session['tipouser'] == 1:
@@ -475,6 +490,7 @@ def perfilestudiante(id):
 		print("Ocurrió un error al conectar: ", e)
 	return render_template('perfilestudiante.html', title="Perfil de Estudiante", estudiante = estudiante, carrera = carrera, estado = estado)
 
+#Administrativo
 @app.route('/inscripcion/<id>', methods=['GET', 'POST'])
 def inscripcion(id):
 	if 'usuario' in session and session['tipouser'] == 1:
@@ -518,13 +534,13 @@ def inscripcion(id):
 							cursor.execute(consulta)
 							cantidadinscrito = cursor.fetchall()
 							if len(cantidadinscrito) > 0:
-								mensaje = "El estudiante ya se encuentra inscrito a la clase seleccionada, no procede la inscripcion"
+								mensaje = 1
 								condicional = 1
 							else:
 								consulta = "insert into claseestudiante(idclase, idestudiante, idestado, nota) values (%s,%s,1,0)"
 								cursor.execute(consulta, (curso, id))
 								conexion.commit()
-								mensaje = ""
+								mensaje = 0
 								consulta = "select idzona from zona where idcurso = %s"
 								cursor.execute(consulta, (curso))
 								tareas = cursor.fetchall()
@@ -542,6 +558,7 @@ def inscripcion(id):
 			return redirect(url_for('perfilestudiante', id=id))
 	return render_template('inscripcion.html', title="Inscripción", estudiante = estudiante, clases = clases, cantidades = cantidades, cant = cant, mensaje=mensaje)
 
+#Administrativo
 @app.route('/curso', methods=['GET', 'POST'])
 def curso():
 	if 'usuario' in session and session['tipouser'] == 1:
@@ -561,6 +578,7 @@ def curso():
 		print("Ocurrió un error al conectar: ", e)
 	return render_template('curso.html', title="Cursos", cursos = cursos)
 
+#Administrativo
 @app.route('/nuevocurso', methods=['GET', 'POST'])
 def nuevocurso():
 	if 'usuario' in session and session['tipouser'] == 1:
@@ -607,6 +625,7 @@ def nuevocurso():
 		return redirect(url_for('curso'))
 	return render_template('nuevocurso.html', title="Nuevo Curso", instituciones = instituciones, curso = curso, nuevo = 1, mensaje = mensaje)
 
+#Administrativo
 @app.route('/editarcurso/<idcurso>', methods=['GET', 'POST'])
 def editarcurso(idcurso):
 	if 'usuario' in session and session['tipouser'] == 1:
@@ -646,6 +665,7 @@ def editarcurso(idcurso):
 		return redirect(url_for('curso'))
 	return render_template('nuevocurso.html', title="Editar Curso", instituciones = instituciones, curso = curso, nuevo = 0, mensaje = mensaje)
 
+#Administrativo
 @app.route('/clase', methods=['GET', 'POST'])
 def clase():
 	if 'usuario' in session and session['tipouser'] == 1:
@@ -666,6 +686,28 @@ def clase():
 		print("Ocurrió un error al conectar: ", e)
 	return render_template('clase.html', title="Clases Activas", clases = clases)
 
+#Administrativo
+@app.route('/clasehistoricoadmin', methods=['GET', 'POST'])
+def clasehistoricoadmin():
+	if 'usuario' in session and session['tipouser'] == 1:
+		pass
+	else:
+		return redirect(url_for('loginadmin'))
+	hoy = date.today()
+	try:
+		conexion = pymysql.connect(host=Conhost, user=Conuser, password=Conpassword, db=Condb)
+		try:
+			with conexion.cursor() as cursor:
+				consulta = f"SELECT c.nombre, CONCAT(d.nombre1,' ',d.nombre2,' ',d.apellido1,' ',d.apellido2,' ',d.apellido3), p.plan, DATE_FORMAT(l.fechainicio,'%d/%m/%Y'), DATE_FORMAT(l.fechafin,'%d/%m/%Y'), l.idclase from clase l inner join plan p on p.idplan = l.idplan inner join curso c on c.idcurso = l.idcurso inner join catedratico d on d.idcatedratico = l.idcatedratico where l.fechafin < '{hoy}' order by c.nombre asc"
+				cursor.execute(consulta)
+				clases = cursor.fetchall()
+		finally:
+			conexion.close()
+	except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
+		print("Ocurrió un error al conectar: ", e)
+	return render_template('clase.html', title="Historico de Clases", clases = clases)
+
+#Administrativo
 @app.route('/nuevaclase', methods=['GET', 'POST'])
 def nuevaclase():
 	if 'usuario' in session and session['tipouser'] == 1:
@@ -710,6 +752,7 @@ def nuevaclase():
 		return redirect(url_for('clase'))
 	return render_template('nuevaclase.html', title="Nueva Clase", cursos = cursos, clase = clase, planes = planes, catedraticos = catedraticos, nuevo = 1)
 
+#Administrativo
 @app.route('/editarclase/<idclase>', methods=['GET', 'POST'])
 def editarclase(idclase):
 	if 'usuario' in session and session['tipouser'] == 1:
@@ -756,6 +799,7 @@ def editarclase(idclase):
 		return redirect(url_for('clase'))
 	return render_template('nuevaclase.html', title="Editar Clase", cursos = cursos, clase = clase, planes = planes, catedraticos = catedraticos, nuevo = 0)
 
+#Administrativo y Catedratico
 @app.route('/claseestudiantes/<idclase>', methods=['GET', 'POST'])
 def claseestudiantes(idclase):
 	if 'usuario' in session and (session['tipouser'] == 2 or session['tipouser'] == 1):
@@ -782,6 +826,37 @@ def claseestudiantes(idclase):
 		print("Ocurrió un error al conectar: ", e)
 	return render_template('claseestudiantes.html', title="Estudiantes por Curso", estudiantes = estudiantes, notas = notas, idclase = idclase)
 
+#Administrativo y Catedratico
+@app.route('/notas/<idestudiante>', methods=['GET', 'POST'])
+def notas(idestudiante):
+	if 'usuario' in session and session['tipouser'] == 1:
+		pass
+	else:
+		return redirect(url_for('home'))
+	hoy = date.today()
+	try:
+		conexion = pymysql.connect(host=Conhost, user=Conuser, password=Conpassword, db=Condb)
+		try:
+			with conexion.cursor() as cursor:
+				consulta = f"select idestudiante, nombre1, nombre2, apellido1, apellido2, apellido3, carnet, foto from estudiante where idestudiante = {idestudiante}"
+				cursor.execute(consulta)
+				estudiante = cursor.fetchone()
+				consulta = "select cu.nombre, cl.fechainicio, cl.fechafin, cl.idclase from curso cu inner join clase cl on cl.idcurso = cu.idcurso inner join claseestudiante ce on ce.idclase = cl.idclase where ce.idestudiante = %s order by cl.fechainicio desc;"
+				cursor.execute(consulta, idestudiante)
+				clases = cursor.fetchall()
+				notas = []
+				for i in clases:
+					consulta = "select COALESCE(sum(ze.nota), 0) from zonaestudiante ze inner join zona z on z.idzona = ze.idzona where ze.idestudiante = %s and z.idcurso = %s"
+					cursor.execute(consulta, (idestudiante, i[3]))
+					nota = cursor.fetchone()
+					notas.append(nota[0])
+		finally:
+			conexion.close()
+	except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
+		print("Ocurrió un error al conectar: ", e)
+	return render_template('notas.html', title="Notas de Estudiante", clases = clases, notas = notas, idestudiante = idestudiante, estudiante = estudiante)
+
+#Catedratico
 @app.route('/vertareas/<idclase>', methods=['GET', 'POST'])
 def vertareas(idclase):
 	if 'usuario' in session and session['tipouser'] == 2:
@@ -796,7 +871,7 @@ def vertareas(idclase):
 				consulta = f'select idzona, concepto, DATE_FORMAT(fecha,"%d/%m/%Y"), ponderacion from zona where idcurso = {idclase}'
 				cursor.execute(consulta)
 				tareas = cursor.fetchall()
-				consulta = f'select IF(fechafin>"{hoy}", 1, 0) from clase where idclase = {idclase}'
+				consulta = f'select IF("{hoy}" < DATE_ADD(fechafin, INTERVAL 1 MONTH), 1, 0) from clase where idclase = {idclase}'
 				print(consulta)
 				cursor.execute(consulta)
 				condicional = cursor.fetchone()
@@ -807,6 +882,7 @@ def vertareas(idclase):
 		print("Ocurrió un error al conectar: ", e)
 	return render_template('vertareas.html', title="Tareas del Curso", tareas = tareas, idclase = idclase, condicional = condicional)
 
+#Catedratico
 @app.route('/nuevatarea/<idclase>', methods=['GET', 'POST'])
 def nuevatarea(idclase):
 	if 'usuario' in session and session['tipouser'] == 2:
@@ -843,6 +919,7 @@ def nuevatarea(idclase):
 		return redirect(url_for('vertareas', idclase = idclase))
 	return render_template('nuevatarea.html', title="Nueva Tarea", idclase = idclase, nuevo = 1, tarea = tarea)
 
+#Catedratico
 @app.route('/editartarea/<idtarea>', methods=['GET', 'POST'])
 def editartarea(idtarea):
 	if 'usuario' in session and session['tipouser'] == 2:
@@ -879,6 +956,7 @@ def editartarea(idtarea):
 		return redirect(url_for('vertareas', idclase = tarea[2]))
 	return render_template('nuevatarea.html', title="Nueva Tarea", nuevo = 0, tarea = tarea)
 
+#Catedratico
 @app.route('/calificartarea/<idtarea>', methods=['GET', 'POST'])
 def calificartarea(idtarea):
 	if 'usuario' in session and session['tipouser'] == 2:
@@ -929,6 +1007,7 @@ def calificartarea(idtarea):
 		return redirect(url_for('vertareas', idclase = tarea[2]))
 	return render_template('calificartarea.html', title="Calificar Tarea", tarea = tarea, dataclase = dataclase, estudiantes = estudiantes, notas = notas)
 
+#Catedratico
 @app.route('/eliminartarea/<idtarea>', methods=['GET', 'POST'])
 def eliminartarea(idtarea):
 	if 'usuario' in session and session['tipouser'] == 2:
@@ -954,6 +1033,7 @@ def eliminartarea(idtarea):
 		print("Ocurrió un error al conectar: ", e)
 	return redirect(url_for('vertareas', idclase = idclase))
 
+#Catedratico
 @app.route('/clasesactuales', methods=['GET', 'POST'])
 def clasesactuales():
 	if 'usuario' in session and session['tipouser'] == 2:
@@ -978,6 +1058,7 @@ def clasesactuales():
 		print("Ocurrió un error al conectar: ", e)
 	return render_template('clasesactuales.html', title="Clases Actuales", clases = clases)
 
+#Catedratico
 @app.route('/claseshistorico', methods=['GET', 'POST'])
 def claseshistorico():
 	if 'usuario' in session and session['tipouser'] == 2:
@@ -1002,6 +1083,7 @@ def claseshistorico():
 		print("Ocurrió un error al conectar: ", e)
 	return render_template('claseshistorico.html', title="Historico", clases = clases)
 
+#General
 @app.route('/logout')
 def logout():
     session.pop('usuario', None)
@@ -1010,6 +1092,7 @@ def logout():
     session.pop('tipouser', None)
     return redirect(url_for('home'))
 
+#Administrativo
 @app.route('/crearusuario', methods=['GET', 'POST'])
 def crearusuario():
 	if 'usuario' in session and session['tipouser'] == 1:
@@ -1049,6 +1132,7 @@ def crearusuario():
 		return redirect(url_for('admin'))
 	return render_template('crearusuario.html', title="Crear Usuario")
 
+#Catedratico y Estudiante
 @app.route('/cambioclave', methods=['GET', 'POST'])
 def cambioclave():
 	if 'usuario' in session:
@@ -1071,6 +1155,7 @@ def cambioclave():
 		return redirect(url_for('catedraticos'))
 	return render_template('cambioclave.html', title="Actualización de contraseña")
 
+#Administrativo
 @app.route('/loginadmin', methods=['GET', 'POST'])
 def loginadmin():
 	try:
@@ -1116,6 +1201,7 @@ def loginadmin():
 		return redirect(url_for('admin'))
 	return render_template('login.html', title="Inicio de Sesión", tipo = 1)
 
+#Catedratico
 @app.route('/logincatedratico', methods=['GET', 'POST'])
 def logincatedratico():
 	try:
@@ -1163,6 +1249,7 @@ def logincatedratico():
 		return redirect(url_for('catedraticos'))
 	return render_template('login.html', title="Inicio de Sesión", tipo = 2)
 
+#Estudiantes
 @app.route('/loginestudiante', methods=['GET', 'POST'])
 def loginestudiante():
 	try:
