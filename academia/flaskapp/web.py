@@ -811,7 +811,7 @@ def claseestudiantes(idclase):
 		conexion = pymysql.connect(host=Conhost, user=Conuser, password=Conpassword, db=Condb)
 		try:
 			with conexion.cursor() as cursor:
-				consulta = "select e.idestudiante, e.nombre1, e.nombre2, e.apellido1, e.apellido2, e.apellido3, e.carnet from estudiante e inner join claseestudiante ce on ce.idestudiante = e.idestudiante where ce.idclase = %s order by e.nombre1, e.nombre2, e.apellido1, e.apellido2, e.apellido3"
+				consulta = "select e.idestudiante, e.nombre1, e.nombre2, e.apellido1, e.apellido2, e.apellido3, e.carnet from estudiante e inner join claseestudiante ce on ce.idestudiante = e.idestudiante where ce.idclase = %s and ce.idestado = 1 order by e.nombre1, e.nombre2, e.apellido1, e.apellido2, e.apellido3"
 				cursor.execute(consulta, idclase)
 				estudiantes = cursor.fetchall()
 				notas = []
@@ -975,7 +975,7 @@ def calificartarea(idtarea):
 				consulta = f"SELECT c.nombre, CONCAT(d.nombre1,' ',d.nombre2,' ',d.apellido1,' ',d.apellido2,' ',d.apellido3) from clase l inner join curso c on c.idcurso = l.idcurso inner join catedratico d on d.idcatedratico = l.idcatedratico where l.idclase = {idclase} order by c.nombre asc"
 				cursor.execute(consulta)
 				dataclase = cursor.fetchone()
-				consulta = f"select e.idestudiante, e.nombre1, e.nombre2, e.apellido1, e.apellido2, e.apellido3, e.carnet from estudiante e inner join claseestudiante ce on ce.idestudiante = e.idestudiante where ce.idclase = {idclase} order by e.nombre1, e.nombre2, e.apellido1, e.apellido2, e.apellido3"
+				consulta = f"select e.idestudiante, e.nombre1, e.nombre2, e.apellido1, e.apellido2, e.apellido3, e.carnet from estudiante e inner join claseestudiante ce on ce.idestudiante = e.idestudiante where ce.idclase = {idclase} and ce.idestado = 1 order by e.nombre1, e.nombre2, e.apellido1, e.apellido2, e.apellido3"
 				cursor.execute(consulta)
 				estudiantes = cursor.fetchall()
 				notas = []
