@@ -939,6 +939,8 @@ def editartarea(idtarea):
 				consulta = "select idcatedratico from clase where idclase = %s"
 				cursor.execute(consulta, idcurso)
 				idcatedratico = cursor.fetchone()
+				print(int(session['idusuario']))
+				print(int(idcatedratico[0]))
 				if int(session['idusuario']) != int(idcatedratico[0]):
 					return redirect(url_for('clasesactuales'))
 		finally:
