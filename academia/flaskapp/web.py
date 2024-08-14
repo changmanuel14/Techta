@@ -361,7 +361,7 @@ def nuevoestudiante():
 				conexion.close()
 		except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
 			print("Ocurrió un error al conectar: ", e)
-		return redirect(url_for('estudiante'))
+		return redirect(url_for('perfilestudiante', id=idestudiante))
 	return render_template('nuevoestudiante.html', title="Nuevo Estudiante", cursos = cursos)
 
 #Administrativo
@@ -415,7 +415,7 @@ def editarestudiante(id):
 				conexion.close()
 		except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
 			print("Ocurrió un error al conectar: ", e)
-		return redirect(url_for('estudiante'))
+		return redirect(url_for('perfilestudiante', id=id))
 	return render_template('editarestudiante.html', title="Editar Estudiante", cursos = cursos, estudiante = estudiante)
 
 #Administrativo
@@ -935,6 +935,12 @@ def editartarea(idtarea):
 				consulta = "SELECT concepto, ponderacion, idcurso FROM zona where idzona = %s"
 				cursor.execute(consulta, idtarea)
 				tarea = cursor.fetchone()
+				idcurso = tarea[2]
+				consulta = "select idcatedratico from clase where idclase = %s"
+				cursor.execute(consulta, idcurso)
+				idcatedratico = cursor.fetchone()
+				if session['idusuario'] != idcatedratico:
+					return redirect(url_for('clasesactuales'))
 		finally:
 			conexion.close()
 	except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
@@ -972,6 +978,11 @@ def calificartarea(idtarea):
 				cursor.execute(consulta, idtarea)
 				tarea = cursor.fetchone()
 				idclase = tarea[2]
+				consulta = "select idcatedratico from clase where idclase = %s"
+				cursor.execute(consulta, idclase)
+				idcatedratico = cursor.fetchone()
+				if session['idusuario'] != idcatedratico:
+					return redirect(url_for('clasesactuales'))
 				consulta = f"SELECT c.nombre, CONCAT(d.nombre1,' ',d.nombre2,' ',d.apellido1,' ',d.apellido2,' ',d.apellido3) from clase l inner join curso c on c.idcurso = l.idcurso inner join catedratico d on d.idcatedratico = l.idcatedratico where l.idclase = {idclase} order by c.nombre asc"
 				cursor.execute(consulta)
 				dataclase = cursor.fetchone()
@@ -1022,6 +1033,11 @@ def eliminartarea(idtarea):
 				cursor.execute(consulta, idtarea)
 				tarea = cursor.fetchone()
 				idclase = tarea[0]
+				consulta = "select idcatedratico from clase where idclase = %s"
+				cursor.execute(consulta, idclase)
+				idcatedratico = cursor.fetchone()
+				if session['idusuario'] != idcatedratico:
+					return redirect(url_for('clasesactuales'))
 				consulta = "delete FROM zona where idzona = %s"
 				cursor.execute(consulta, idtarea)
 				consulta = "delete FROM zonaestudiante where idzona = %s"
