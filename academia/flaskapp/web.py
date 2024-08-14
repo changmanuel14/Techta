@@ -939,7 +939,7 @@ def editartarea(idtarea):
 				consulta = "select idcatedratico from clase where idclase = %s"
 				cursor.execute(consulta, idcurso)
 				idcatedratico = cursor.fetchone()
-				if int(session['idusuario']) != int(idcatedratico):
+				if int(session['idusuario']) != int(idcatedratico[0]):
 					return redirect(url_for('clasesactuales'))
 		finally:
 			conexion.close()
@@ -981,7 +981,7 @@ def calificartarea(idtarea):
 				consulta = "select idcatedratico from clase where idclase = %s"
 				cursor.execute(consulta, idclase)
 				idcatedratico = cursor.fetchone()
-				if int(session['idusuario']) != int(idcatedratico):
+				if int(session['idusuario']) != int(idcatedratico[0]):
 					return redirect(url_for('clasesactuales'))
 				consulta = f"SELECT c.nombre, CONCAT(d.nombre1,' ',d.nombre2,' ',d.apellido1,' ',d.apellido2,' ',d.apellido3) from clase l inner join curso c on c.idcurso = l.idcurso inner join catedratico d on d.idcatedratico = l.idcatedratico where l.idclase = {idclase} order by c.nombre asc"
 				cursor.execute(consulta)
@@ -1036,7 +1036,7 @@ def eliminartarea(idtarea):
 				consulta = "select idcatedratico from clase where idclase = %s"
 				cursor.execute(consulta, idclase)
 				idcatedratico = cursor.fetchone()
-				if int(session['idusuario']) != int(idcatedratico):
+				if int(session['idusuario']) != int(idcatedratico[0]):
 					return redirect(url_for('clasesactuales'))
 				consulta = "delete FROM zona where idzona = %s"
 				cursor.execute(consulta, idtarea)
