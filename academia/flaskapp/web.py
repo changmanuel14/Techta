@@ -224,7 +224,7 @@ def historialestudiante():
 				cursor.execute(consulta, session["idusuario"])
 				idestudiante = cursor.fetchone()
 				idestudiante = idestudiante[0]
-				consulta = f"Select c.idclase from clase c inner join claseestudiante ce on c.idclase = ce.idclase where ce.idestudiante = {idestudiante} and c.fechafin = '{hoy}'"
+				consulta = f"Select c.idclase from clase c inner join claseestudiante ce on c.idclase = ce.idclase where ce.idestudiante = {idestudiante} and c.fechafin < '{hoy}'"
 				cursor.execute(consulta)
 				idcursos = cursor.fetchall()
 				clases = []
