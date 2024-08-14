@@ -259,7 +259,7 @@ def vertareasest(idclase):
 				consulta = f"SELECT c.nombre, CONCAT(d.nombre1,' ',d.nombre2,' ',d.apellido1,' ',d.apellido2,' ',d.apellido3), p.plan, DATE_FORMAT(l.fechainicio,'%d/%m/%Y'), DATE_FORMAT(l.fechafin,'%d/%m/%Y'), l.idclase from clase l inner join plan p on p.idplan = l.idplan inner join curso c on c.idcurso = l.idcurso inner join catedratico d on d.idcatedratico = l.idcatedratico where l.idclase = {idclase} order by c.nombre asc"
 				cursor.execute(consulta)
 				datacurso = cursor.fetchone()
-				consulta = f"Select t.concepto, t.fecha, te.nota from zona t inner join zonaestudiante te on te.idzona = t.idzona where te.idestudiante = {idestudiante} and t.idcurso = {idclase} group by t.idzona order by t.fecha asc"
+				consulta = f"Select t.concepto, DATE_FORMAT(t.fecha,'%d/%m/%Y'), te.nota from zona t inner join zonaestudiante te on te.idzona = t.idzona where te.idestudiante = {idestudiante} and t.idcurso = {idclase} group by t.idzona order by t.fecha asc"
 				cursor.execute(consulta)
 				tareas = cursor.fetchall()
 				print(consulta)
