@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block content %}
+<center>
+	<h1>Bienvenido</h1>
+	<h2>Control de Entradas a Congreso</h2>
+	<br><br><br>
+	<h3 style="color: {{color}};">{{mensaje}}</h3>
+	<form action="" method="POST">
+		<div class="form-row">
+			<div class="form-group col-md-12">
+				<label for="codigo">Lectura de Código QR</label>
+				<input type="text" id="codigo" name="codigo" class="form-control" required
+					placeholder="Código QR" autocomplete="off" autofocus>
+			</div>
+		</div>
+		<br>
+		<button type="submit" class="btn btn-primary">Verificar</button>
+		<br>
+		<hr>
+	</form>
+</center>
+
+{% endblock %}

@@ -1329,5 +1329,99 @@ def loginestudiante():
 		return redirect(url_for('estudiantes'))
 	return render_template('login.html', title="Inicio de Sesión", tipo = 3)
 
+@app.route('/guardarcongreso/<nombre>&<carnet>&<descripcion>&<idpago>', methods=['GET', 'POST'])
+def guardarcongreso(nombre, carnet, descripcion, idpago):
+	try:
+		conexion = pymysql.connect(host=Conhost, user=Conuser, password=Conpassword, db=Condb)
+		try:
+			with conexion.cursor() as cursor:
+				consulta = "insert into congreso(nombre, carnet, descripcion, idpago, fecha) values (%s, %s, %s, %s, CURDATE());"
+				cursor.execute(consulta, (nombre, carnet, descripcion, idpago))
+				conexion.commit()
+		finally:
+			conexion.close()
+	except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
+		print("Ocurrió un error al conectar: ", e)
+	return redirect(url_for('estudiantes'))
+
+@app.route('/verentradascongreso', methods=['GET', 'POST'])
+def verentradascongreso():
+	if 'usuario' in session and session['tipouser'] == 1:
+		pass
+	else:
+		return redirect(url_for('loginadmin'))
+	try:
+		conexion = pymysql.connect(host=Conhost, user=Conuser, password=Conpassword, db=Condb)
+		try:
+			with conexion.cursor() as cursor:
+				consulta = "select nombre, carnet, descripcion, fecha, idpago, ingreso from congreso where year(fecha) = year(CURDATE());"
+				cursor.execute(consulta)
+				pagoscongreso = cursor.fetchall()
+		finally:
+			conexion.close()
+	except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
+		print("Ocurrió un error al conectar: ", e)
+	return render_template('verentradascongreso.html', title="Pagos de Congreso", pagoscongreso=pagoscongreso)
+
+@app.route('/registrarentradacongreso', methods=['GET', 'POST'])
+def registrarentradacongreso():
+	if 'usuario' in session and session['tipouser'] == 1:
+		pass
+	else:
+		return redirect(url_for('loginadmin'))
+	mensaje = ""
+	color = "red"
+	if request.method == 'POST':
+		codigo = request.form["codigo"]
+		codigo = int(codigo)
+		try:
+			conexion = pymysql.connect(host=Conhost, user=Conuser, password=Conpassword, db=Condb)
+			try:
+				with conexion.cursor() as cursor:
+					consulta = "select ingreso from congreso where idpago = %s and ingreso = '0';"
+					cursor.execute(consulta, codigo)
+					entradas0 = cursor.fetchall()
+					consulta = "select ingreso from congreso where idpago = %s and ingreso != '0';"
+					cursor.execute(consulta, codigo)
+					entradas1 = cursor.fetchall()
+					if len(entradas0) == 0:
+						if len(entradas1) == 0:
+							mensaje = "El código no es válido"
+						else:
+							ingreso = entradas1[0][0]
+							mensaje = f"El usuario ya ingresó: {ingreso}"
+					else:
+						text = f"%d/%m/%Y %H:%M"
+						horaactual = datetime.now().strftime(text)
+						consulta = "update congreso set ingreso = %s where idpago = %s"
+						cursor.execute(consulta, (horaactual, codigo))
+						mensaje = "La entrada se ha registrado correctamente"
+						color = "green"
+						conexion.commit()
+			finally:
+				conexion.close()
+		except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
+			print("Ocurrió un error al conectar: ", e)
+	return render_template('registrarentradacongreso.html', title="Entrada a Congreso", mensaje = mensaje, color=color)
+
+@app.route('/congreso', methods=['GET', 'POST'])
+def congreso():
+	if 'usuario' in session and session['tipouser'] == 1:
+		pass
+	else:
+		return redirect(url_for('loginadmin'))
+	try:
+		conexion = pymysql.connect(host=Conhost, user=Conuser, password=Conpassword, db=Condb)
+		try:
+			with conexion.cursor() as cursor:
+				consulta = "SELECT c.nombre, i.nombre, c.idcurso, c.abreviatura from curso c inner join institucion i on i.idinstitucion = c.idinstitucion order by c.nombre asc"
+				cursor.execute(consulta)
+				cursos = cursor.fetchall()
+		finally:
+			conexion.close()
+	except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
+		print("Ocurrió un error al conectar: ", e)
+	return render_template('congreso.html', title="Congreso")
+
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=5005, threaded=True, debug=True)
