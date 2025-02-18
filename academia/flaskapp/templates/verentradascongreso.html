@@ -16,16 +16,18 @@
 
 <h1>Pagos de Congreso</h1>
 <br><br>
-<table class="table table-striped sortable" id="sampleTable">
-	<tr>
-		<th>No</th>
-		<th>Nombre</th>
-		<th>Carnet</th>
-		<th>Descripcion</th>
-		<th>Fecha</th>
-		<th>ID Sistema de Pagos</th>
-		<th>Fecha y Hora de Ingreso</th>
-	</tr>
+<table class="table table-striped" id="sampleTable">
+	<thead>
+		<tr>
+			<th>No</th>
+			<th>Nombre</th>
+			<th>Carnet</th>
+			<th>Descripcion</th>
+			<th>Fecha</th>
+			<th>ID Sistema de Pagos</th>
+			<th>Fecha y Hora de Ingreso</th>
+		</tr>
+	</thead>
 	{% for i in pagoscongreso %}
 	<tr>
 		<td>{{loop.index}}</td>
@@ -43,6 +45,7 @@
 	$(document).ready(function () {
 		$("#sampleTable").fancyTable({
 			inputPlaceholder: 'Buscar',
+			sortable: true,
 			pagination: false
 		});
 	});
