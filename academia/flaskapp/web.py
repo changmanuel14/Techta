@@ -361,7 +361,7 @@ def nuevoestudiante():
 				conexion.close()
 		except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
 			print("Ocurrió un error al conectar: ", e)
-		return redirect(url_for('perfilestudiante', id=idestudiante))
+		return redirect(url_for('perfilestudiante', id=idestudiante[0]))
 	return render_template('nuevoestudiante.html', title="Nuevo Estudiante", cursos = cursos)
 
 #Administrativo
